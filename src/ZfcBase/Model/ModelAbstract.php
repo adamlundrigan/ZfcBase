@@ -75,6 +75,12 @@ abstract class ModelAbstract implements ArrayAccess, RowObjectInterface
             }
         }
     }
+
+    // Zend\Db\ResultSet\RowObjectInterface: exchangeArray is now populate
+    // see: https://github.com/zendframework/zf2/commit/44a06800 
+    public function populate(array $array) {
+        $this->exchangeArray($array);
+    }
     //END
     
     /**
