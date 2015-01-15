@@ -15,7 +15,11 @@ abstract class EventProvider implements EventManagerAwareInterface
     protected $events;
 
     /**
-     * Set the event manager instance used by this context
+     * Set the event manager instance used by this context.
+     *
+     * For convenience, this method will also set the class name / LSB name as
+     * identifiers, in addition to any string or array of strings set to the
+     * $this->eventIdentifier property.
      *
      * @param  EventManagerInterface $events
      * @return mixed
@@ -36,9 +40,11 @@ abstract class EventProvider implements EventManagerAwareInterface
         }
         $events->setIdentifiers($identifiers);
         $this->events = $events;
+        if (method_exists($this, 'attachDefaultListeners')) {
+            $this->attachDefaultListeners();
+        }
         return $this;
     }
-
     /**
      * Retrieve the event manager
      *

@@ -25,5 +25,20 @@ class ProvidesEventsFormTest extends PHPUnit_Framework_TestCase
         $this->form->setEventManager($em);
         $this->assertSame($this->form->getEventManager(), $em);
     }
+
+    public function testSetEventManagerAttachesDefaultListenersWhenSpecified()
+    {
+        $object = new TestAsset\ProvidesEventsWithDefaultListeners();
+        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $object->getEventManager());
+        $this->assertCount(1, $object->getEventManager()->getListeners('foo'));
+    }
+
+    public function testSetEventManagerBehavesAsNormalWhenNoDefaultListenersSupplied()
+    {
+        $object = new TestAsset\ProvidesEventsWithNoDefaultListeners();
+        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $object->getEventManager());
+        $this->assertCount(0, $object->getEventManager()->getEvents());
+    }
+
 }
 
